@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"inmemorydb/internal/commandline_handler"
 	"inmemorydb/internal/database_manager"
+	"inmemorydb/internal/database"
 	"os"
 )
 
@@ -13,13 +14,13 @@ func main() {
 
 	dbManager := database_manager.NewInMemoryDatabaseManager(defaultDB)
 
-	commandFactory := commandline_handler.NewCommandRecognizer(dbManager)
+	commandFactory := commandline_handler.NewCommandRecognizer()
 
 	for {
 		scanner := bufio.NewScanner(os.Stdin)
 		scanner.Scan()
 		command := commandFactory.RecognizeCommand(scanner.Text())
-		command.Execute()
+		command.Execute(dbManager)
 
 
 	}
